@@ -16,17 +16,19 @@ class CLI
     "past_files_prefix" => "week",
     "past_files_format" => "csv",
     "past_files_folder" => "past_groups",
+    "past_assignments_folder" => "past_assignments",
     "student_list" => "students.json",
     "group_size" => 3,
     "verbose" => true,
   }.freeze
 
-  attr_reader :students, :past_groups, :group_size, :config
+  attr_reader :students, :past_groups, :past_assignments, :group_size, :config
 
   def initialize
     load_config
     load_students
     load_past_groups
+    load_past_assignments
     @group_size = @config["group_size"]
 
     # check if app was started with parameters
@@ -80,9 +82,20 @@ class CLI
   def load_past_groups
     past_groups_folder = @config["past_files_folder"]
     return [] unless File.directory?(past_groups_folder)
+
     @past_groups = Dir["#{past_groups_folder}/*.csv"].map do |filename|
       ReadFile.new(filename).read.group_by { |row| row["study_group"] }
     end
+  end
+
+  def load_past_assignments
+    past_assignments_folder = @config["past_assignments_folder"]
+    return [] unless File.directory?(past_assignments_folder)
+
+    @past_assignments = Dir["#{past_assignments_folder}/*.json"].map do |filename|
+      ReadFile.new(filename).read.group_by { |assignment| assignment["assignmentName"] }
+    end.
+      reduce({}) { |hash, assignment_data| hash.merge assignment_data }
   end
 
   ##
