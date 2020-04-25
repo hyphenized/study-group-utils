@@ -18,6 +18,8 @@ class Interpreter
       # puts "your input: #{command}"
       if $_commands.keys.include? command
         $_commands[command].run(args: args, cli: cli)
+      else 
+        puts "Wrong command"
       end
     end
   end
