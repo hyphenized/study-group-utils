@@ -43,6 +43,7 @@ class StudentMatrix
         @groups_formed[random_group_index][0] = random_student_index
         students_with_group << random_student_index
         students_available.delete(random_student_index)
+        students_available.shuffle!
 
         cursor = 0
         until is_group_full?(@groups_formed[random_group_index])
@@ -61,6 +62,7 @@ class StudentMatrix
             students_with_group << students_available[cursor]
             insert_user_in_free_space(students_available[cursor], groups_formed[random_group_index])
             students_available.delete(students_available[cursor])
+            students_available.shuffle!
           end
         end
       end
