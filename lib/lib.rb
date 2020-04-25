@@ -18,7 +18,7 @@ class Interpreter
       # puts "your input: #{command}"
       if $_commands.keys.include? command
         $_commands[command].run(args: args, cli: cli)
-      else 
+      else
         puts "Wrong command"
       end
     end
@@ -36,8 +36,17 @@ class Interpreter
     end
   end
 
+  # Loads basic commands and warns the user if the command name is reserved
   def load_basic_commands
-    $_commands["help"] = BasicCommands::Help.new
-    $_commands["exit"] = BasicCommands::Exit.new
+    load_cmd = lambda do |name, cmd|
+      if !$_commands[name].nil?
+        puts "Command #{name} is reserved, it won't work unless you rename the file"
+        print "Press Enter to continue "
+        gets
+      end
+      $_commands[name] = cmd
+    end
+    load_cmd["help", BasicCommands::Help.new]
+    load_cmd["exit", BasicCommands::Exit.new]
   end
 end
