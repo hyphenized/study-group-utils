@@ -10,7 +10,7 @@ Encoding.default_external = "UTF-8"
 # exit
 # end
 
-# Runs as a CLI or 
+# Starts as CLI or Runs a command and exits
 class CLI
   DEFAULT_CONFIG = {
     "past_files_prefix" => "week",
@@ -46,7 +46,7 @@ class CLI
     when "match", "group"
       options = parser.parse
     else
-      puts parser.parser
+      puts parser.parser.to_s
       exit(1)
     end
   end

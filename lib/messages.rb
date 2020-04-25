@@ -16,5 +16,6 @@ module Messages
         exit                      Ends the program
 
         Type help <command> to get more information about a command
+        Type help to show this screen again
         SCREEN
 end

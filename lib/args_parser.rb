@@ -19,7 +19,7 @@ class ArgsParser
       #  options[:verbose] = v
       # end
 
-      opts.on("-f FORMAT", "--format=FORMAT", "Output format, either json, yaml or csv") do |custom_format|
+      opts.on("-f FORMAT", "--format=FORMAT", "Valid formats: json, yaml,  csv") do |custom_format|
         unless %w(json csv yaml).include? custom_format
           raise OptionParser::InvalidOption, "Invalid format"
         end

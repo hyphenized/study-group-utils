@@ -9,15 +9,15 @@ class Interpreter
     load_commands
     load_basic_commands
 
-    #p $_commands
-    $_commands["help"].run(cli: cli)
+    # p $_commands
+    $_commands["help"].run(args: "", cli: cli)
     while input = Readline.readline("> ", true)
-      system('clear') || system('cls')
-      input.strip.sub!(/^(\w+)\s*/, '')
-      p command = $1
-      #puts "your input: #{command}"
+      # system('clear') || system('cls')
+      args = input.strip.sub!(/^(\w+)\s*/, '')
+      command = Regexp.last_match(1)
+      # puts "your input: #{command}"
       if $_commands.keys.include? command
-        $_commands[command].run(args: input, cli: cli )
+        $_commands[command].run(args: args, cli: cli)
       end
     end
   end
@@ -30,7 +30,7 @@ class Interpreter
     end
 
     $_commands.transform_keys! do |key|
-       File.basename(key).sub(/#{File.extname(key)}$/, '')
+      File.basename(key).sub(/#{File.extname(key)}$/, '')
     end
   end
 
