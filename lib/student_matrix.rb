@@ -10,7 +10,8 @@ class StudentMatrix
     @groups_in_total = (students.size / @group_size).floor
     @matrix = Array.new(students.size) { Array.new(students.size) { 0 } }
     @name_maps_to_pos = {}
-    students.keys.each_with_index { |item, index| @name_maps_to_pos[item] = index }
+    @students = students
+    @students.keys.each_with_index { |item, index| @name_maps_to_pos[item] = index }
   end
 
   # We pass an array of each file
@@ -67,6 +68,13 @@ class StudentMatrix
         end
       end
     end
+  end
+
+  # Returns an array of study groups where each study group is an array of student names
+  # @return [Array]
+  def get_groups
+    students_ids = @students.keys
+    @groups_formed.map { |group| group.map { |id| students_ids[id] } }
   end
 
   def insert_user_in_free_space(user, group)

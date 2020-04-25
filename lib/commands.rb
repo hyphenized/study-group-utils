@@ -8,13 +8,50 @@ class Command
     puts "Loaded command - #{@_name}"
   end
 
+  # Returns description and usage about a command
+  # @return [Array<String>]
   def get_help
     [@_description, @_usage]
   end
 
+  # Gets confirmation from the user
+  # @param msg [String]
+  # @return [Boolean]
+  def get_confirmation(msg)
+    print msg << "(y/n) "
+    loop do
+      answer = gets
+      if answer.nil?
+        return false
+      end
+      case answer.strip
+      when "y", "yes" then break true
+      when "n", "no" then break false
+      else
+        puts "Invalid answer, must be y/n or yes/no"
+      end
+    end
+  end
+
+  # @param msg [String]
+  # @param required [Boolean=false]
+  def prompt(msg, required: false)
+    print "#{msg} "
+    loop do
+      answer = gets
+      if answer.nil?
+        return "" unless required
+        puts "\nAnswer was required, aborting..."
+        exit(1)
+      end
+      break answer.strip unless required && answer.empty?
+      puts "Cannot be empty"
+    end
+  end
+
   # Runs the command
   def run(**kwargs)
-    puts "This command does nothing"
+    puts "This command doesn't do anything yet"
   end
 end
 
