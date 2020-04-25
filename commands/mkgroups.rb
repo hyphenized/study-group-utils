@@ -17,12 +17,22 @@ class StudyGroups < Command
     display_groups(matrix.get_groups)
 
     if get_confirmation("Would you like to save these results?")
-      filename = prompt("Filename?", required: false)
-      # file_fmt = prompt("Format? Enter to use default (csv):")
+      filename = prompt("Filename? Add extension to use custom format(default: csv)")
       f_exists = File.exists?(filename)
+      ext_name = File.extname(filename)
       if (f_exists && get_confirmation("File exists, overwrite?")) || !f_exists
+        filename = ext_name.empty? ? "#{filename}.csv" : filename
         File.open(filename, "w") do |file|
-          file.write(matrix.get_groups)
+          case ext_name
+          when ".json"
+            file.write(matrix.to_json)
+          when ".csv", ""
+            file.write(matrix.to_csv)
+          when ".yml"
+            file.write(matrix.to_yml)
+          else
+            file.write(matrix.get_groups)
+          end
         end
         puts "File saved.."
       end
