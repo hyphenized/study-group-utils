@@ -21,7 +21,7 @@ class CLI
     "verbose" => true,
   }.freeze
 
-  attr_reader :students, :past_groups, :group_size
+  attr_reader :students, :past_groups, :group_size, :config
 
   def initialize
     load_config
