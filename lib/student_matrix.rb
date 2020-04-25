@@ -1,3 +1,7 @@
+require 'csv'
+require 'json'
+require 'yaml'
+
 class StudentMatrix
   ErrorStudentsWorkedTogether = ArgumentError
 
@@ -75,6 +79,30 @@ class StudentMatrix
   def get_groups
     students_ids = @students.keys
     @groups_formed.map { |group| group.map { |id| students_ids[id] } }
+  end
+
+  # Returns the json representation of the students groups
+  def to_json(*_args)
+    get_groups.to_json
+  end
+
+  # Returns the yaml representation of the students groups
+  def to_yml
+    groups = get_groups
+    groups = Hash[Array.new(groups.size) { |index| ["Group #{index + 1}", groups[index]] }]
+    YAML.dump(groups)
+  end
+
+  # Returns the csv representation of the students groups
+  def to_csv
+    CSV.generate("", encoding: 'UTF-8') do |csv|
+      csv << %w(study_group name)
+      get_groups.each_with_index do |group, index|
+        group.each do |student|
+          csv << [index + 1, student]
+        end
+      end
+    end
   end
 
   def insert_user_in_free_space(user, group)

@@ -11,8 +11,8 @@ module Messages
 
         #{"Commands".center 60}
 
-        generate <opts>           Generate groups
-        match <opts>              Matches students to assignments
+        matchpr                   Matches students to assignments
+        mkgroups                  Generate groups
         exit                      Ends the program
 
         Type help <command> to get more information about a command
