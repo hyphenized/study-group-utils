@@ -17,7 +17,9 @@ class StudyGroups < Command
     display_groups(matrix.get_groups)
 
     if get_confirmation("Would you like to save these results?")
-      filename = prompt("Filename? Add extension to use custom format(default: csv)")
+      puts "Filename? Add extension to use custom format"
+      filename = prompt("(default: output.csv):")
+      filename = filename.empty? ? "output.csv" : filename
       f_exists = File.exists?(filename)
       ext_name = File.extname(filename)
       if (f_exists && get_confirmation("File exists, overwrite?")) || !f_exists

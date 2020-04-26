@@ -4,7 +4,7 @@
 #
 class List < Command
   def initialize
-    @_name = "List"
+    @_name = "list"
     super
   end
 
