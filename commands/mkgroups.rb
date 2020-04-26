@@ -16,6 +16,7 @@ class StudyGroups < Command
     matrix.load_ocurrences(cli.past_groups)
     matrix.generate_groups!
     display_groups(matrix.get_groups)
+    matrix.social_students.each { |student| puts "#{student} has already worked with everyone" }
 
     if get_confirmation("Would you like to save these results?")
       puts "Filename? Add extension to use custom format"
