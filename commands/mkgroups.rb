@@ -13,6 +13,7 @@ class StudyGroups < Command
     # @type [CLI]
     cli = kwargs[:cli]
     matrix = StudentMatrix.new(cli.students, cli.config["group_size"])
+    matrix.load_ocurrences(cli.past_groups)
     matrix.generate_groups!
     display_groups(matrix.get_groups)
 
