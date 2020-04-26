@@ -59,10 +59,9 @@ class StudentMatrix
         until is_group_full?(@groups_formed[random_group_index])
           cursor %= students_available.size
           worked_together = have_they_worked_together(students_available[cursor], @groups_formed[random_group_index])
-        
+
           if worked_together
             if students_available.size <= @groups_in_total || retries > students_available.size
-              #cursor=0
               random_other_student = students_available.sample
               students_with_group << random_other_student
               insert_user_in_free_space(random_other_student, groups_formed[random_group_index])
@@ -113,6 +112,15 @@ class StudentMatrix
     end
   end
 
+  # A student becomes social after they've worked with everyone
+  # @return [Array<String>]
+  def social_students
+    students = @students.keys
+    Array.new(@matrix.size) do |i|
+      @matrix[i].one?(0) ?  students[i] :  nil
+    end.compact
+  end
+
   def insert_user_in_free_space(user, group)
     free_pos = next_pos_available_in_group(group)
     group[free_pos] = user
@@ -125,7 +133,7 @@ class StudentMatrix
 
   def have_they_worked_together(guy, group_array)
     group_array.each do |other|
-      next if other.nil? 
+      next if other.nil?
       if @matrix[guy][other] > 0
         # p "#{guy} has worked with #{other}"
         return true
