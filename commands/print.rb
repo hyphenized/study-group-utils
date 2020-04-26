@@ -4,9 +4,13 @@
 #
 class Print < Command
   def initialize
-    @_name = "Print CMD"
-    @_description = "Print CMD"
+    @_name = "print"
+    @_description = "Outputs something to the CLI"
     super
+  end
+
+  def run(**kwargs)
+    puts kwargs[:args]
   end
 end
 

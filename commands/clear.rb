@@ -4,7 +4,8 @@
 #
 class Clear < Command
   def initialize
-    @_name = "Clear"
+    @_name = "clear"
+    @_description = "Clears the console"
     super
   end
 
