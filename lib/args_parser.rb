@@ -10,8 +10,8 @@ class ArgsParser
       Usage: study-utils.rb <command> [options]
 
         available commands:
-        match           Match students for code reviews
-        group           Generate study groups
+        matchpr           Match students for code reviews
+        mkgroups          Generate study groups
 
       BANNER
 
