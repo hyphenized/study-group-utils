@@ -1,3 +1,6 @@
+require 'yaml'
+require 'json'
+require 'csv'
 #
 # BASIC COMMAND TEMPLATE
 #
@@ -21,8 +24,7 @@ class MatchPeerReviews < Command
     #
     #  TODO: Ask the assignment
     #
-
-    @prs = past_assignments["Structuring HTML Pages"]
+    @prs = past_assignments["Structuring HTML Pages"].map(&:clone)
 
     # TODO: Read the max reviews per assigment in config file and add in main
     @max_reviews_per_assignment = 2
@@ -36,34 +38,36 @@ class MatchPeerReviews < Command
     # We give the selected assignment to do the matches
     match
 
-=begin
-    #Check the occurrences
-    ids = []
-    @prs.compact!
-    @prs.each do |match|
-      match["reviewers"].each { |id| ids << id }
-    end
+    # check_occurrences
 
-    p ids.tally
-=end
+    # print results
+    display_matches
 
-    matched_array_columns = match_to_csv
-    matched_array_columns.each { |row| puts row.join(", ") }
-
-    puts "Do you want to save this match? (Y/N)"
-    yes_or_no = gets.chomp.upcase
-    case yes_or_no
-    when "Y"
-      print "File name: "
-      file_name = gets.chomp
-      csv = CSV.generate("", encoding: "UTF-8") do |csv|
-        matched_array_columns.each { |row| csv << row }
+    # TODO: REFACTOR THIS
+    if get_confirmation("Do you want to save these matches?")
+      puts "Filename? Add extension to use custom format"
+      filename = prompt("(default: output.csv):")
+      filename = filename.empty? ? "output.csv" : filename
+      f_exists = File.exists?(filename)
+      ext_name = File.extname(filename)
+      if (f_exists && get_confirmation("File exists, overwrite?")) || !f_exists
+        filename = ext_name.empty? ? "#{filename}.csv" : filename
+        File.open(filename, "w") do |file|
+          case ext_name
+          when ".json"
+            file.write(match_to_json)
+          when ".csv", ""
+            file.write(match_to_csv)
+          when ".yml"
+            file.write(match_to_yml)
+          else
+            file.write(get_reviewers)
+          end
+        end
+        puts "File saved.."
       end
-      File.open("#{file_name}.csv", "w") { |file| file.write(csv) }
-    when "N"
-      puts "Match discarded."
     else
-      puts "Invalid, try again."
+      puts "Matches discarded."
     end
   end
 
@@ -81,17 +85,17 @@ class MatchPeerReviews < Command
     @students_available_with_count = @students_id_map.to_h { |id, _name| [id, 0] }
     case @mode
     when FILL_MODE
-      @students_id_map.keys.each { |student_id|
+      @students_id_map.keys.each do |student_id|
         add_id_in_free_space(@prs[pick_random_pr(student_id)], student_id)
-      }
+      end
     when NORMAL
-      @prs.each { |pr_obj|
+      @prs.each do |pr_obj|
         until has_full_reviewers(pr_obj)
           random_student_id = pick_random_student(pr_obj)
           add_id_in_free_space(pr_obj, random_student_id)
           add_student_review_count(random_student_id)
         end
-      }
+      end
     end
   end
 
@@ -127,20 +131,63 @@ class MatchPeerReviews < Command
   end
 
   def add_id_in_free_space(pr_hash, id)
-    pr_hash["reviewers"].each_with_index { |reviewer_id, index|
+    pr_hash["reviewers"].each_with_index do |reviewer_id, index|
       if reviewer_id.nil?
         pr_hash["reviewers"][index] = id
         return
       end
-    }
+    end
+  end
+
+  # Prints results to the CLI
+  def display_matches
+    get_reviewers.each_pair do |name, assigned_prs|
+      puts name
+      puts "-" * 10
+      assigned_prs.each(&method(:puts))
+      puts "\n"
+    end
+  end
+
+  # Returns a hash of reviewers and their assigned PRs
+  # @return [Hash{String=>Array<String>}]
+  def get_reviewers
+    hash = {}
+    @students_id_map.each do |id, name|
+      hash[name] = @prs.reduce([]) do |pr_list, pr|
+        pr_list << pr["url"] if pr["reviewers"].include?(id)
+        pr_list
+      end
+    end
+    hash
+  end
+
+  def match_to_json
+    get_reviewers.to_json
+  end
+
+  def match_to_yml
+    YAML.dump(get_reviewers)
   end
 
   def match_to_csv
-    @students_id_map.map do |k, v|
-      row = [v]
-      @prs.select { |pr| pr["reviewers"].include?(k) }.each { |match| row << match["url"] }
-      row
+    CSV.generate("", encoding: "UTF-8") do |csv|
+      # matched_array_columns.each { |row| csv << row }
+      get_reviewers.each_pair do |name, assigned_prs|
+        csv << [name, *assigned_prs]
+      end
     end
+  end
+
+  def check_occurrences
+    #     #Check the occurrences
+    #     ids = []
+    #     @prs.compact!
+    #     @prs.each do |match|
+    #       match["reviewers"].each { |id| ids << id }
+    #     end
+    #
+    #     p ids.tally
   end
 end
 
