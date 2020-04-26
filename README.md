@@ -15,6 +15,7 @@ The all-in-one tool to generate study groups and code review buddies. Built usin
 
 Default app config.json :
 
+```js
     {
     	"past_files_prefix": "week",
     	"past_files_format": "csv",
@@ -26,6 +27,7 @@ Default app config.json :
     	"group_size": 3,
     	"verbose": true
     }
+```
 
 ### past_groups folder
 
@@ -55,17 +57,20 @@ Contains .csv files with the following columns and rows
 
 ID and name are required
 
+```js
     {
       "id": "36",
       "name": "Victor Rodriguez"
     }
+```
 
 ### assignments.json in past_assignment folder
 
 ID, url and submittedBy are required
 
+```js
     [
-      # Each assignments has this form
+       /* Each assignments has this form */
      {  "id": "2",
       "assignmentName": "Structuring HTML Pages",
       "url": "https://github.com/codeableorg/html-essentials/pull/1",
@@ -73,6 +78,7 @@ ID, url and submittedBy are required
       "submittedBy": [ { "id": "23" } ]
       }
     ]
+```
 
 ## Screenshots
 
