@@ -259,7 +259,7 @@
     "lessonPath": "/curriculum/module1/week1/day1-wd/3-HTML-essentials.md",
     "submittedBy": [
       {
-        "id": "9"
+        "id": "35"
       }
     ]
   },
@@ -271,6 +271,72 @@
     "submittedBy": [
       {
         "id": "11"
+      }
+    ]
+  },
+  {
+    "id": "415",
+    "assignmentName": "Structuring HTML Pages",
+    "url": "https://github.com/alessandro54/codeable-assignments/tree/master/Module_1/Week_1/Day_1/html-essentials",
+    "lessonPath": "/curriculum/module1/week1/day1-wd/3-HTML-essentials.md",
+    "submittedBy": [
+      {
+        "id": "20"
+      }
+    ]
+  },
+  {
+    "id": "416",
+    "assignmentName": "Structuring HTML Pages",
+    "url": "https://github.com/alessandro54/codeable-assignments/tree/master/Module_1/Week_1/Day_1/html-essentials",
+    "lessonPath": "/curriculum/module1/week1/day1-wd/3-HTML-essentials.md",
+    "submittedBy": [
+      {
+        "id": "23"
+      }
+    ]
+  },
+  {
+    "id": "417",
+    "assignmentName": "Structuring HTML Pages",
+    "url": "https://github.com/alessandro54/codeable-assignments/tree/master/Module_1/Week_1/Day_1/html-essentials",
+    "lessonPath": "/curriculum/module1/week1/day1-wd/3-HTML-essentials.md",
+    "submittedBy": [
+      {
+        "id": "25"
+      }
+    ]
+  },
+  {
+    "id": "418",
+    "assignmentName": "Structuring HTML Pages",
+    "url": "https://github.com/alessandro54/codeable-assignments/tree/master/Module_1/Week_1/Day_1/html-essentials",
+    "lessonPath": "/curriculum/module1/week1/day1-wd/3-HTML-essentials.md",
+    "submittedBy": [
+      {
+        "id": "27"
+      }
+    ]
+  },
+  {
+    "id": "419",
+    "assignmentName": "Structuring HTML Pages",
+    "url": "https://github.com/alessandro54/codeable-assignments/tree/master/Module_1/Week_1/Day_1/html-essentials",
+    "lessonPath": "/curriculum/module1/week1/day1-wd/3-HTML-essentials.md",
+    "submittedBy": [
+      {
+        "id": "30"
+      }
+    ]
+  },
+  {
+    "id": "420",
+    "assignmentName": "Structuring HTML Pages",
+    "url": "https://github.com/alessandro54/codeable-assignments/tree/master/Module_1/Week_1/Day_1/html-essentials",
+    "lessonPath": "/curriculum/module1/week1/day1-wd/3-HTML-essentials.md",
+    "submittedBy": [
+      {
+        "id": "31"
       }
     ]
   }
