@@ -5,6 +5,7 @@
 class StudyGroups < Command
   NAME = "mkgroups"
   DESCRIPTION = "Creates study groups"
+
   def initialize
     super
   end
@@ -40,6 +41,13 @@ class StudyGroups < Command
         end
         puts "File saved.."
       end
+      # We save a copy as a past group
+      folder_name = cli.config["past_files_folder"]
+      name = cli.config["past_files_prefix"]
+      count = Dir["#{folder_name}/#{name}*.csv"].size
+      File.open("#{folder_name}/#{name}#{count + 1}.csv", "w") do |file|
+        file.write(matrix.to_csv)
+      end
     else
       puts "Ok then.."
     end
@@ -49,7 +57,7 @@ class StudyGroups < Command
   def display_groups(groups)
     puts "The following groups have been generated:\n"
     groups.each_with_index do |group, index|
-      puts "#{index + 1}: #{group.join(', ')}"
+      puts "#{index + 1}: #{group.join(", ")}"
     end
     puts "-" * 60
   end
