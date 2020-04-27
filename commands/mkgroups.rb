@@ -3,9 +3,9 @@
 #
 #
 class StudyGroups < Command
+  NAME = "mkgroups"
+  DESCRIPTION = "Creates study groups"
   def initialize
-    @_name = "mkgroups"
-    @_description = "Creates study groups"
     super
   end
 

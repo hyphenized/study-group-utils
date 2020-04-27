@@ -1,17 +1,16 @@
 # A CLI command
 class Command
-  attr_reader :_description, :_usage
+  NAME = "Unnamed command"
+  DESCRIPTION = "There's no information about this command"
+  USAGE = DESCRIPTION
   def initialize
-    @_name ||= "Unnamed command"
-    @_description ||= "There's no information about this command"
-    @_usage ||= @_description
-    puts "Loaded command - #{@_name}"
+    puts "Loaded command - #{self.class::NAME}"
   end
 
   # Returns description and usage about a command
   # @return [Array<String>]
   def get_help
-    [@_description, @_usage]
+    [self.class::DESCRIPTION, self.class::USAGE]
   end
 
   # Gets confirmation from the user
@@ -58,10 +57,10 @@ end
 # Utility commands for the CLI
 module BasicCommands
   class Help < Command
+    NAME = "help"
+    DESCRIPTION = "Outputs help about a command"
+    USAGE = "help <command_name>"
     def initialize
-      @_name = "help"
-      @_description = "Outputs help about a command"
-      @_usage = "help <command_name>"
       super
     end
 
@@ -72,7 +71,7 @@ module BasicCommands
         unless $_commands[cmd].nil?
           description, usage = $_commands[cmd].get_help
           puts description
-          puts usage if usage != description
+          puts usage if usage != Command::DESCRIPTION
           return
         end
       end
@@ -86,9 +85,9 @@ module BasicCommands
   end
 
   class Exit < Command
+    NAME = "exit"
+    DESCRIPTION = "Exits the program"
     def initialize
-      @_name = "exit"
-      @_description = "Exits the program"
       super
     end
 

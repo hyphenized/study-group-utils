@@ -3,9 +3,9 @@
 #
 #
 class Clear < Command
+  NAME = "clear"
+  DESCRIPTION = "Clears the console"
   def initialize
-    @_name = "clear"
-    @_description = "Clears the console"
     super
   end
 
