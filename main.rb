@@ -56,8 +56,8 @@ class CLI
   # Loads CLI config
   def load_config
     @config = DEFAULT_CONFIG.merge
-    if File.readable?("_config.json")
-      @config = @config.merge(JSON.parse(File.read('_config.json')))
+    if File.readable?("config.json")
+      @config = @config.merge(JSON.parse(File.read('config.json')))
     end
   end
 
