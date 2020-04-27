@@ -3,8 +3,8 @@
 #
 #
 class List < Command
+  NAME = "list"
   def initialize
-    @_name = "list"
     super
   end
 

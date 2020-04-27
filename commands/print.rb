@@ -3,9 +3,9 @@
 #
 #
 class Print < Command
+  NAME = "print"
+  DESCRIPTION = "Outputs something to the CLI"
   def initialize
-    @_name = "print"
-    @_description = "Outputs something to the CLI"
     super
   end
 

@@ -6,11 +6,12 @@ require 'csv'
 #
 #
 class MatchPeerReviews < Command
+  NAME = "matchpr"
+  DESCRIPTION = "Matches students to assignments"
   NORMAL = 0
   FILL_MODE = 1
 
   def initialize
-    @_name = "matchpr"
     @mode = NORMAL
     super
   end
