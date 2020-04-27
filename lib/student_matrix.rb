@@ -54,21 +54,18 @@ class StudentMatrix
         students_available.shuffle!
 
         cursor = 0
-        # keep track of how many times we tried to find a new partner
-        retries = 0
         until is_group_full?(@groups_formed[random_group_index])
           cursor %= students_available.size
           worked_together = have_they_worked_together(students_available[cursor], @groups_formed[random_group_index])
 
           if worked_together
-            if students_available.size <= @groups_in_total || retries > students_available.size
+            if students_available.size <= @groups_in_total || cursor + 1 > students_available.size
               random_other_student = students_available.sample
               students_with_group << random_other_student
               insert_user_in_free_space(random_other_student, groups_formed[random_group_index])
               students_available.delete(random_other_student)
             else
               cursor += 1
-              retries += 1
             end
           else
             students_with_group << students_available[cursor]
