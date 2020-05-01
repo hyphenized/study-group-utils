@@ -26,9 +26,9 @@ class CLI
 
   def initialize
     load_config
-    load_students
-    load_past_groups
-    load_past_assignments
+    @students = load_students(students_json: @config["student_list"])
+    @past_groups = load_past_groups(folder: @config["past_files_folder"])
+    @past_assignments = load_past_assignments(folder: @config["past_assignments_folder"])
     @group_size = @config["group_size"]
 
     # check if app was started with parameters
@@ -62,10 +62,10 @@ class CLI
   end
 
   # Loads students to memory, raises error if file cannot be read
-  def load_students
-    students_file = @config["student_list"]
-    if File.readable?(students_file)
-      File.open(students_file) do |file|
+  # @param students_json [String] Students JSON file
+  def load_students(students_json:)
+    if File.readable?(students_json)
+      File.open(students_json) do |file|
         # Parse students into a hash of name=>id
         @students = JSON.parse(file.read).map do |hash|
           [hash["name"], hash["id"]]
@@ -79,20 +79,20 @@ class CLI
   end
 
   # Returns past_groups
-  def load_past_groups
-    past_groups_folder = @config["past_files_folder"]
-    return [] unless File.directory?(past_groups_folder)
+  # @param folder [String] Where to look for past groups
+  def load_past_groups(folder:)
+    return [] unless File.directory?(folder)
 
-    @past_groups = Dir["#{past_groups_folder}/*.csv"].map do |filename|
+    Dir["#{folder}/*.csv"].map do |filename|
       ReadFile.new(filename).read.group_by { |row| row["study_group"] }
     end
   end
 
-  def load_past_assignments
-    past_assignments_folder = @config["past_assignments_folder"]
-    return [] unless File.directory?(past_assignments_folder)
+  # @param folder [String] Where to look for past assignments
+  def load_past_assignments(folder:)
+    return [] unless File.directory?(folder)
 
-    @past_assignments = Dir["#{past_assignments_folder}/*.json"].map do |filename|
+    Dir["#{folder}/*.json"].map do |filename|
       ReadFile.new(filename).read.group_by { |assignment| assignment["assignmentName"] }
     end.
       reduce({}) { |hash, assignment_data| hash.merge assignment_data }
