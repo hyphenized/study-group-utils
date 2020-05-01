@@ -13,7 +13,9 @@ class StudyGroups < Command
     # @type [CLI]
     cli = kwargs[:cli]
     matrix = StudentMatrix.new(cli.students, cli.config["group_size"])
-    matrix.load_ocurrences(cli.past_groups)
+    past_groups = load_past_groups(folder: cli.config["past_files_folder"])
+
+    matrix.load_ocurrences(past_groups)
     matrix.generate_groups!
     display_groups(matrix.get_groups)
     matrix.social_students.each { |student| puts "#{student} has already worked with everyone" }
@@ -45,6 +47,7 @@ class StudyGroups < Command
     end
   end
 
+  # Prints generated groups to the console
   # @param groups [Array<Array<Integer>>]
   def display_groups(groups)
     puts "The following groups have been generated:\n"
@@ -52,6 +55,16 @@ class StudyGroups < Command
       puts "#{index + 1}: #{group.join(', ')}"
     end
     puts "-" * 60
+  end
+
+  # Returns past_groups
+  # @param folder [String] Where to look for past groups
+  def load_past_groups(folder:)
+    return [] unless File.directory?(folder)
+
+    Dir["#{folder}/*.csv"].map do |filename|
+      ReadFile.new(filename).read.group_by { |row| row["study_group"] }
+    end
   end
 end
 

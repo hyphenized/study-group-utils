@@ -18,7 +18,7 @@ class MatchPeerReviews < Command
 
   def run(**kwargs)
     # We get a hash map with the name of the assignment as a key, and the values are all the PRs
-    past_assignments = kwargs[:cli].past_assignments
+    past_assignments = load_past_assignments(folder: kwargs[:cli].config["past_assignments_folder"])
     @students = kwargs[:cli].students
 
     # Ask which assignment past_assignments.keys does the user want to match
@@ -178,6 +178,16 @@ class MatchPeerReviews < Command
         csv << [name, *assigned_prs]
       end
     end
+  end
+
+  # @param folder [String] Where to look for past assignments
+  def load_past_assignments(folder:)
+    return [] unless File.directory?(folder)
+
+    Dir["#{folder}/*.json"].map do |filename|
+      ReadFile.new(filename).read.group_by { |assignment| assignment["assignmentName"] }
+    end.
+      reduce({}) { |hash, assignment_data| hash.merge assignment_data }
   end
 
   def check_occurrences
