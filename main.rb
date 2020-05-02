@@ -60,14 +60,14 @@ class CLI
 
   # Loads students to memory, raises error if file cannot be read
   # @param students_json [String] Students JSON file
+  # @return [Hash{ String => String }] Hash of name => id
   def load_students(students_json:)
     if File.readable?(students_json)
       File.open(students_json) do |file|
         # Parse students into a hash of name=>id
-        @students = JSON.parse(file.read).map do |hash|
-          [hash["name"], hash["id"]]
+        JSON.parse(file.read).each_with_object({}) do |student, hash|
+          hash[student["name"]] = student["id"]
         end
-        @students = Hash[@students]
       end
     else
       # Couldn't read students file
