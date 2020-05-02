@@ -12,20 +12,10 @@ Encoding.default_external = "UTF-8"
 
 # Starts as CLI or Runs a command and exits
 class CLI
-  DEFAULT_CONFIG = {
-    "past_files_prefix" => "week",
-    "past_files_format" => "csv",
-    "past_files_folder" => "past_groups",
-    "past_assignments_folder" => "past_assignments",
-    "student_list" => "students.json",
-    "group_size" => 3,
-    "verbose" => true,
-  }.freeze
-
   attr_reader :students, :config
 
   def initialize
-    load_config
+    @config = CLIConfig.load
     @students = load_students(students_json: @config["student_list"])
 
     # check if app was started with parameters
@@ -50,14 +40,6 @@ class CLI
     end
   end
 
-  # Loads CLI config
-  def load_config
-    @config = DEFAULT_CONFIG.merge
-    if File.readable?("_config.json")
-      @config = @config.merge(JSON.parse(File.read('_config.json')))
-    end
-  end
-
   # Loads students to memory, raises error if file cannot be read
   # @param students_json [String] Students JSON file
   # @return [Hash{ String => String }] Hash of name => id
@@ -74,8 +56,6 @@ class CLI
       raise "Could not read students list file"
     end
   end
-
-
 end
 
 CLI.new
