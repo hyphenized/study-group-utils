@@ -8,9 +8,11 @@ class List < Command
     super
   end
 
-  def run
-    p `ls -l`
+  # @param args [Array<String>] Arguments passed
+  # @param cli [StudyGroupUtils] The CLI instance that ran this script
+  def run(cli:, args:, **kwargs)
+    puts `ls -l`
   end
 end
 
-$_commands[__FILE__] = List.new
+StudyGroupUtils[__FILE__] = List.new

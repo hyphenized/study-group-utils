@@ -68,4 +68,4 @@ class StudyGroups < Command
   end
 end
 
-$_commands[__FILE__] = StudyGroups.new
+StudyGroupUtils[__FILE__] = StudyGroups.new

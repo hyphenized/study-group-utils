@@ -202,4 +202,4 @@ class MatchPeerReviews < Command
   end
 end
 
-$_commands[__FILE__] = MatchPeerReviews.new
+StudyGroupUtils[__FILE__] = MatchPeerReviews.new

@@ -1,10 +1,11 @@
 # A CLI command
+# Totally not a script
 class Command
   NAME = "Unnamed command"
   DESCRIPTION = "There's no information about this command"
   USAGE = DESCRIPTION
   def initialize
-    puts "Loaded command - #{self.class::NAME}"
+    puts "Loading command - #{self.class::NAME}... "
   end
 
   # Returns description and usage about a command
@@ -56,6 +57,15 @@ end
 
 # Utility commands for the CLI
 module BasicCommands
+  # Returns all basic commands
+  # @return [Hash{String => Command}]
+  def self.all
+    constants.each_with_object({}) do |cmd, hash|
+      command = BasicCommands.const_get(cmd)
+      hash[command::NAME] = command
+    end
+  end
+
   class Help < Command
     NAME = "help"
     DESCRIPTION = "Outputs help about a command"
@@ -67,16 +77,25 @@ module BasicCommands
     def run(**kwargs)
       # user asked for help about a command
       unless (args = kwargs[:args]).empty?
-        cmd = args.split.shift
-        unless $_commands[cmd].nil?
-          description, usage = $_commands[cmd].get_help
-          puts description
-          puts usage if usage != Command::DESCRIPTION
-          return
-        end
+        cmd = args.shift
+        return print_cmd_info(cmd) unless StudyGroupUtils[cmd].nil?
       end
 
-      students = kwargs[:cli].students.keys.map { |x| x.center(30) }
+      print_students(kwargs[:cli].students)
+    end
+
+    # Prints information about a command
+    # @param cmd [String] The command's name
+    def print_cmd_info(cmd)
+      description, usage = StudyGroupUtils[cmd].get_help
+      puts description
+      puts usage if usage != Command::DESCRIPTION
+    end
+
+    # Prints students to the console
+    # @param students [Hash{String => String}] A hash of name => id
+    def print_students(students)
+      students = students.keys.map { |x| x.center(30) }
       students = Array.new(students.size) do |i|
         students[i] << (i.odd? ? "\n" : "")
       end.join

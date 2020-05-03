@@ -14,4 +14,4 @@ class Print < Command
   end
 end
 
-$_commands[__FILE__] = Print.new
+StudyGroupUtils[__FILE__] = Print.new

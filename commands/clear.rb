@@ -9,9 +9,11 @@ class Clear < Command
     super
   end
 
-  def run(**kwargs)
+  # @param args [Array<String>] Arguments passed
+  # @param cli [StudyGroupUtils] The CLI instance that ran this script
+  def run(cli:, args:, **kwargs)
     system('clear') || system('cls')
   end
 end
 
-$_commands[__FILE__] = Clear.new
+StudyGroupUtils[__FILE__] = Clear.new
