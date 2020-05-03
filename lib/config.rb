@@ -1,7 +1,4 @@
-require 'readline'
-Dir[File.expand_path("./**/*.rb", File.dirname(__FILE__))].each(&method(:require))
-
-# Reads commands from the CLI
+# Manages the CLI Config
 
 class CLIConfig
   DEFAULT_CONFIG = {
